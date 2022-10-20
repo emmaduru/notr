@@ -1,0 +1,21 @@
+<%- include("../header") %> 
+    <h2 class="text-center">Login</h2>
+
+    <form id="login-form" class="mx-auto col-lg-6 col-md-8" method="post">
+        <div class="form-err"></div>
+        <div class="form-group mb-3">
+            <label for="email">Email Address</label>
+            <input type="email" name="email" id="email" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <small>Don't have an account? <a href="/register">Register</a></small>
+    </form>
+
+    <script src="/js/auth/login.js"></script>
+<%- include("../footer") %> 
