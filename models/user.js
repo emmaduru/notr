@@ -23,12 +23,24 @@ const userSchema = new mongoose.Schema({
         select: false
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    },
+    toObject: {
+        virtuals: true
+    }
 })
 
 userSchema.pre("save", async function() {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
 });
+
+userSchema.virtual("notes", {
+    ref: "Note",
+    foreignField: "author",
+    localField: "_id"
+})
 
 module.exports = mongoose.model("User", userSchema);

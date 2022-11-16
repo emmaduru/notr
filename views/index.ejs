@@ -1,3 +1,57 @@
 <%- include("header") %>
-    <h1>Home</h1>
+    <div class="mx-auto col-lg-6 col-md-8">
+        <form method="post" id="create-note-form">
+            <input type="text" name="body" id="body" class="form-control" placeholder="Add Note">
+        </form>
+
+        <ul class="list-group my-3">
+            <% notes.forEach(note => { %>
+                <li class="list-group-item d-flex justify-content-between">
+                    <%= note.body %>
+                    <i id="<%= note._id %>" class="fa-solid fa-trash-can delete-icon"></i>
+                </li>
+            <% }) %> 
+        </ul>
+    </div>
+    <script>
+        const createNoteForm = document.querySelector("#create-note-form");
+
+        createNoteForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const body = createNoteForm.body.value;
+
+            try {
+                const res = await fetch ("/add", {
+                    method: "POST",
+                    body: JSON.stringify({body}),
+                    headers: {"Content-Type": "application/json"}
+                });
+                const data = await res.json();
+
+                if (data.success) location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        })
+
+        const deleteIcons = document.querySelectorAll(".delete-icon");
+
+        deleteIcons.forEach(deleteIcon => {
+            deleteIcon.addEventListener("click", async (e) => {
+                e.preventDefault();
+                
+                try {
+                    const res = await fetch(`/${e.target.id}`, {
+                        method: "DELETE",
+                    });
+                    const data = await res.json();
+
+                    if (data.success) location.reload();
+                } catch (err) {
+                    console.log(err);
+                }
+            })
+        })
+    </script>
 <%- include("footer") %> 

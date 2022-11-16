@@ -16,12 +16,16 @@ app.use(express.json());
 app.use(express.static("public"))
 app.use(cookieParser())
 
+const User = require("./models/user")
 
 app.use("*", check_user)
 app.use("/", require("./routes/auth"))
-app.get("/", protect, (req, res) => {
-    res.render("index")
-});
+app.use("/", require("./routes/notes"))
+
+app.use("/delete_all", async (req, res) => {
+    await User.deleteMany({});
+    return res.redirect("/login");
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, (err) => {
